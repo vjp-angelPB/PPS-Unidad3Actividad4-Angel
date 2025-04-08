@@ -96,7 +96,7 @@ Recordamos que en nuestro docker-compose hemos creado un volumen bind-mount para
 
 ![](Images/img5.png)
 
-- Creo dentro de esa carpeta un archivo PHP con nombre **login1.php**, con el siguiente contenido:
+- Creo dentro de esa carpeta un archivo PHP con nombre **login.php**, con el siguiente contenido:
 
 ¡¡¡OJO¡¡¡ que en la 2ª linea hay que cambiar PasswordBBDD por la contraseña de root de tu BBDD (recuerda que la tienes en la configuración de variables de entorno, el archivo .env).
 
@@ -137,6 +137,9 @@ $conn = new mysqli("database", "root", "password", "SQLi");
 
 Esta página nos muestra dos campos para que introduzcamos nuestro usuario y nuestra contraseña.
 
+![](Images/img7.png)
+
+![](Images/img8.png)
 
 
 Podemos ver los datos de nuestros usuarios desde PHPMyAdmin en la siguientes dirección: <http://localhost:8080/index.php?route=/sql&pos=0&db=SQLi&table=usuarios>
