@@ -407,7 +407,9 @@ $hashed_password = password_hash("tu_contraseña", PASSWORD_DEFAULT);
 
 A la hora de leerla usaríamos la función:  **password_verify()**	
 
+Verificamos si funciona la inyección:
 
+![](Images/img15.png)
 
 
 
