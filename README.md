@@ -80,41 +80,10 @@ Vemos como se ha creado correctamente, tanto Base de Datos, como tabla y usuario
 
 - Accedemos via web al servicio de phpmyadmin que tenemos instalado: <http://localhost:8080>
 
-- Al pulsar la opción de sql, podemos ejecutar las sentencias de sql que necesitemos.
+- Si seleccionamos la opción de sql, podemos ejecutar sentencias de sqñ que necesitemos, por lo que solo necesitaríamos introducir las sentencias SQL del apartado anterior.
 
-![](images/sqli15.png)
+![](Images/img4.png)
 
-- Por lo tanto, tan sólo tenemos que introducir las sentencias SQL del apartado anterior.
-
-![](images/sqli16.png)
-
-
-**OPCIÓN 3: completamente de manera gráfica**
----
-
-- Accedemos via web al servicio de phpmyadmin que tenemos instalado: <http://localhost:8080>
-
-![](images/sqli2.png)
-
-- Creamos una base de datos nueva, pulsando el botón de _Nueva_
-
-![](images/sqli3.png)
-
-- Vamos a llamar a la tabla SQLi
-
-![](images/sqli4.png)
-
-- Una vez creada, inmediatamente nos sugiere que creemos una tabla nueva. La tabla que necesitamos se llamará **Usuarios* y debe de tener 3 columnas:**id, nombre y contrasenya**, cada una con su tipo de valor correspondiente.
-
-![](images/sqli6.png)
-
-- Una vez creada podemos introducir los valores de los usuarios que queramos pulsando en **Insertar**
-
-![](images/sqli7.png)
-
-- e introducimos los valores que queremos. 
-
-![](images/sqli8.png)
 
 
 ### Crear página web en Apache
@@ -125,7 +94,7 @@ Recordamos que en nuestro docker-compose hemos creado un volumen bind-mount para
 
 - Me situo en la carpeta _./www_ y creo una carpeta con nombre SQLi  para esta actividad.
 
-![](images/sqli17.png)
+![](Images/img5.png)
 
 - Creo dentro de esa carpeta un archivo PHP con nombre **login1.php**, con el siguiente contenido:
 
@@ -162,9 +131,13 @@ $conn = new mysqli("database", "root", "password", "SQLi");
 </form>
 
 ~~~
+
+![](Images/img6.png)
+
+
 Esta página nos muestra dos campos para que introduzcamos nuestro usuario y nuestra contraseña.
 
-![](images/sqli18.png)
+
 
 Podemos ver los datos de nuestros usuarios desde PHPMyAdmin en la siguientes dirección: <http://localhost:8080/index.php?route=/sql&pos=0&db=SQLi&table=usuarios>
 
