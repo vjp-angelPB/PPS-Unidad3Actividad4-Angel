@@ -272,11 +272,11 @@ La función **addslashes()** nos permite hacerlo, ya que Devuelve una cadena con
 
 Por lo tanto, modificamos el archivo anterior, introduciendo las lineas de escape de caracteres especiales tanto del campo de usuario como de la contraseña.
 
-![](images/sqli19.png)
+![](Images/img13.png)
 
 El resultado es que ya no funciona la inyección SQL:
 
-![](images/sqli24.png)
+![](Images/img12.png)
 
 
 **Mejoras en el segundo código (Más seguro, pero aún con problemas)**
@@ -321,7 +321,7 @@ El resultado es que ya no funciona la inyección SQL:
 
 ## Código mejorado uso consultas parametrizadas
 
-VAmos a intentar incorporar esas mejoras:
+Vamos a intentar incorporar esas mejoras:
 
 ~~~
 <?php
@@ -380,18 +380,24 @@ $conn->close();
 </form>
 ~~~
 
+```
+cp login2.php login3.php
+```
+
+![](Images/img14.png)
+
 
 **Explicación de las mejoras**
 ---
-✅ Consultas preparadas: **prepare()** y **bind_param()** protegen contra SQL Injection.
+* Consultas preparadas: **prepare()** y **bind_param()** protegen contra SQL Injection.
 
-✅ Eliminación de addslashes(): No es necesario con consultas preparadas.
+* Eliminación de addslashes(): No es necesario con consultas preparadas.
 
-✅ Escapado de salida con **htmlspecialchars()**: Evita XSS en los datos mostrados.
+* Escapado de salida con **htmlspecialchars()**: Evita XSS en los datos mostrados.
 
-✅ Uso de **password_hash()** y **password_verify()**: Si las contraseñas en la base de datos no están hasheadas, hay que actualizarlas con password_hash().
+* Uso de **password_hash()** y **password_verify()**: Si las contraseñas en la base de datos no están hasheadas, hay que actualizarlas con password_hash().
 
- Guardar las contraseñas en BBDD con la función **password_hash()**:
+* Guardar las contraseñas en BBDD con la función **password_hash()**:
 
 Si las contraseñas aún no están almacenadas con **password_hash()**, a la hora de guardar las contraseñas en la BBDD, en PHP necesitarás guardarlas con algo como:
 
