@@ -33,9 +33,8 @@ Este ataque ocurre cuando una aplicación no valida correctamente la entrada del
 docker-compose up -d
 ~~~
 
-```
-![](images/sqli1.png) IMAGEN
-```
+![](Images/img1.png)
+
 
 ### Creación de base de datos
 
