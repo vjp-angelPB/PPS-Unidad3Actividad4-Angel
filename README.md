@@ -412,11 +412,4 @@ Verificamos si funciona la inyección:
 ![](Images/img15.png)
 
 
-
-
-
-
-
-
-
-
+> Ángel Pérez Blanco
