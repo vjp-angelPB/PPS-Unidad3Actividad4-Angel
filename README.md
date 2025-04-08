@@ -55,7 +55,7 @@ mysql -u root -p`
 ~~~
 Puedes ver el proceso en a siguiente imagen:
 
-![](images/sqli9.png)
+![](Images/img2.png)
 
 y una vez conectado introducimos las consultas sql necesarias para crear la base de datos, tabla e introducir los datos de los usuarios:
 
