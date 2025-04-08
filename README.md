@@ -72,7 +72,7 @@ INSERT INTO usuarios (usuario, contrasenya) VALUES ('admin', '1234'), ('usuario'
 
 Vemos como se ha creado correctamente, tanto Base de Datos, como tabla y usuarios:
 
-![](images/sqli10.png)
+![](Images/img3.png)
 
 
 **OPCIÓN 2: a través de PHPmyAdmin**
