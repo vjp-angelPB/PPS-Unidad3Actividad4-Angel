@@ -19,11 +19,9 @@ Este ataque ocurre cuando una aplicación no valida correctamente la entrada del
 
 ## ACTIVIDADES A REALIZAR
 
-> Lee detenidamente la sección de [Inyección SQL de la página de PortWigger](https://portswigger.net/web-security/sql-injection)
->
-> Lee el siguiente [documento sobre Explotación y Mitigación de ataques de Inyección SQL](files/ExplotacionYMitigacionSQLInjection.pdf) de Raúl Fuentes. Nos va a seguir de guía para aprender a explotar y mitigar ataques de inyección SQL en nuestro entorno de pruebas.
->
-> También y como marco de referencia, tienes [ la sección de correspondiente de inyección de SQL de la **Proyecto Web Security Testing Guide** (WSTG) del proyecto **OWASP**.](https://owasp.org/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/07-Input_Validation_Testing/05-Testing_for_SQL_Injection)
+> Leer la sección de [Inyección SQL de la página de PortWigger](https://portswigger.net/web-security/sql-injection)
+> Lee el siguiente [documento sobre Explotación y Mitigación de ataques de Inyección SQL](files/ExplotacionYMitigacionSQLInjection.pdf) de Raúl Fuentes. Este documento puede servir de guía para aprender a explotar y mitigar ataqueas de inyección SQL en entornos de pruebas.
+> También como marco de referencia, tenemos [la sección de correspondiente de inyección de SQL de la **Proyecto Web Security Testing Guide** (WSTG) del proyecto **OWASP**.](https://owasp.org/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/07-Input_Validation_Testing/05-Testing_for_SQL_Injection)
 
 
 
@@ -33,9 +31,8 @@ Este ataque ocurre cuando una aplicación no valida correctamente la entrada del
 docker-compose up -d
 ~~~
 
-```
-![](images/sqli1.png) IMAGEN
-```
+![](Images/img1.png)
+
 
 ### Creación de base de datos
 
@@ -58,7 +55,7 @@ mysql -u root -p`
 ~~~
 Puedes ver el proceso en a siguiente imagen:
 
-![](images/sqli9.png)
+![](Images/img2.png)
 
 y una vez conectado introducimos las consultas sql necesarias para crear la base de datos, tabla e introducir los datos de los usuarios:
 
@@ -75,7 +72,7 @@ INSERT INTO usuarios (usuario, contrasenya) VALUES ('admin', '1234'), ('usuario'
 
 Vemos como se ha creado correctamente, tanto Base de Datos, como tabla y usuarios:
 
-![](images/sqli10.png)
+![](Images/img3.png)
 
 
 **OPCIÓN 2: a través de PHPmyAdmin**
@@ -83,41 +80,10 @@ Vemos como se ha creado correctamente, tanto Base de Datos, como tabla y usuario
 
 - Accedemos via web al servicio de phpmyadmin que tenemos instalado: <http://localhost:8080>
 
-- Al pulsar la opción de sql, podemos ejecutar las sentencias de sql que necesitemos.
+- Si seleccionamos la opción de sql, podemos ejecutar sentencias de sqñ que necesitemos, por lo que solo necesitaríamos introducir las sentencias SQL del apartado anterior.
 
-![](images/sqli15.png)
+![](Images/img4.png)
 
-- Por lo tanto, tan sólo tenemos que introducir las sentencias SQL del apartado anterior.
-
-![](images/sqli16.png)
-
-
-**OPCIÓN 3: completamente de manera gráfica**
----
-
-- Accedemos via web al servicio de phpmyadmin que tenemos instalado: <http://localhost:8080>
-
-![](images/sqli2.png)
-
-- Creamos una base de datos nueva, pulsando el botón de _Nueva_
-
-![](images/sqli3.png)
-
-- Vamos a llamar a la tabla SQLi
-
-![](images/sqli4.png)
-
-- Una vez creada, inmediatamente nos sugiere que creemos una tabla nueva. La tabla que necesitamos se llamará **Usuarios* y debe de tener 3 columnas:**id, nombre y contrasenya**, cada una con su tipo de valor correspondiente.
-
-![](images/sqli6.png)
-
-- Una vez creada podemos introducir los valores de los usuarios que queramos pulsando en **Insertar**
-
-![](images/sqli7.png)
-
-- e introducimos los valores que queremos. 
-
-![](images/sqli8.png)
 
 
 ### Crear página web en Apache
@@ -128,9 +94,9 @@ Recordamos que en nuestro docker-compose hemos creado un volumen bind-mount para
 
 - Me situo en la carpeta _./www_ y creo una carpeta con nombre SQLi  para esta actividad.
 
-![](images/sqli17.png)
+![](Images/img5.png)
 
-- Creo dentro de esa carpeta un archivo PHP con nombre **login1.php**, con el siguiente contenido:
+- Creo dentro de esa carpeta un archivo PHP con nombre **login.php**, con el siguiente contenido:
 
 ¡¡¡OJO¡¡¡ que en la 2ª linea hay que cambiar PasswordBBDD por la contraseña de root de tu BBDD (recuerda que la tienes en la configuración de variables de entorno, el archivo .env).
 
@@ -165,23 +131,23 @@ $conn = new mysqli("database", "root", "password", "SQLi");
 </form>
 
 ~~~
+
+![](Images/img6.png)
+
+
 Esta página nos muestra dos campos para que introduzcamos nuestro usuario y nuestra contraseña.
 
-![](images/sqli18.png)
+![](Images/img7.png)
 
 Podemos ver los datos de nuestros usuarios desde PHPMyAdmin en la siguientes dirección: <http://localhost:8080/index.php?route=/sql&pos=0&db=SQLi&table=usuarios>
-
-Como podemos ver en la imagen, el usuario **admin** tiene contraseña **admin123**.
-
-![](images/sqli26.png)
 
 Con los datos que hemos introducido en los campos de consulta, hace una consulta a la BBDD para ver si el usuario y contraseña introducido son correctos.
 
 Ya tendremos preparado nuestro servidor web para poder ver las vulnerabilidades de Inyección SQL. Accedemos desde `http://localhost/SQLi/login1.php`
 
-Si introducimos el usuario **admin** y la contraseña **admin123** la consulta dice que es usuario y contraseña correcta y nos dejaría logearnos en la página.
+Si introducimos el usuario **admin** y la contraseña **1234** la consulta dice que es usuario y contraseña correcta y nos dejaría logearnos en la página.
 
-![](images/sqli25.png)
+![](Images/img8.png)
 
 Como vemos, el problema se produce debido a que hacemos la consulta que hacemos a la base de datos es la siguiente:
 
@@ -196,19 +162,18 @@ Estamos construyendo la consulta directamenbte con lo escrito en los campos de u
 Podemos inyectar infinidad de código. Entre ello, podemos hacer ataques de:
 
 
+
 **Bypass de autenticación**
 
 Para realizar la explotación, en el campo "Usuario" ingresar:
 
 ~~~
-' OR '1'='1' #
+' OR '1'='1' -- -
 ~~~
-
-![](images/sqli20.png)
 
 > Resultado esperado: Inicia sesión sin credenciales válidas.
 
-![](images/sqli21.png)
+![](Images/img9.png)
 
 
 **Obtener credenciales de la base de datos**
@@ -220,8 +185,6 @@ Para realizar la explotación, en el campo "Usuario" ingresar:
 ~~~
 
 > Resultado esperado: Se muestran todos los usuarios y contraseñas.
-
-![](images/sqli22.png)
 
 
 **Problemas del primer código (Inseguro)**
@@ -258,6 +221,7 @@ Para ir incorporando soluciones, sin eliminar las anteriores versiones, vamos a 
 cp login1.php login2.php 
 ~~~
 
+![](Images/img10.png)
 
 ### Primera mitigación, escapar los caracteres especiales.
 
@@ -296,6 +260,10 @@ $conn = new mysqli("database", "root", "password", "SQLi");
 </form>
 
 ~~~
+
+![](Images/img11.png)
+
+
 Como vemos, podemos incluir consultas dentro de los campos, al utilizar caracteres especiales como las comillas.
 
 Por lo tanto la primera aproximación sería escapar esos caracteres especiales de los valores de la consulta.
