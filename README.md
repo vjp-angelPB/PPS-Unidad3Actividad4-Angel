@@ -20,12 +20,16 @@ Este ataque ocurre cuando una aplicación no valida correctamente la entrada del
 ## ACTIVIDADES A REALIZAR
 
 > Leer la sección de [Inyección SQL de la página de PortWigger](https://portswigger.net/web-security/sql-injection)
+> 
 > Lee el siguiente [documento sobre Explotación y Mitigación de ataques de Inyección SQL](files/ExplotacionYMitigacionSQLInjection.pdf) de Raúl Fuentes. Este documento puede servir de guía para aprender a explotar y mitigar ataqueas de inyección SQL en entornos de pruebas.
+> 
 > También como marco de referencia, tenemos [la sección de correspondiente de inyección de SQL de la **Proyecto Web Security Testing Guide** (WSTG) del proyecto **OWASP**.](https://owasp.org/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/07-Input_Validation_Testing/05-Testing_for_SQL_Injection)
 
 
 
 ### Iniciar entorno de pruebas
+
+Ejecutamos el siguiente comando para leventar el entorno de pruebas
 
 ~~~
 docker-compose up -d
@@ -36,28 +40,34 @@ docker-compose up -d
 
 ### Creación de base de datos
 
-Para crear la Base de datos que vamos a utilizar para esta actividad tenemos varias opciones:
-
+Vamos a crear la Base de datos que vamos a utilizar en esta actividad de varias opciones:
 
 **OPCIÓN 1: Desde terminal**
 ---
 
-Recordamos que nuestra base de datos se encuentra, en mi caso, en el contenedor _lamp-mysql18_, por lo que tenemos que conectarnos al servidor de MySQL que se encuentra en dicha máquina:
+Nuestra base de datos se encuentra en el contenedor _lamp-mysql18_, por lo que vamos a conectarnos al servidor de MySQL que está en dicha máquina.
+Si no recordamos donde se encuentra, ejecutamos el siguiente comando para verificar el contenedor:
+```
+docker ps
+```
+
+Al ejecutar el siguiente comando, accedemos al bash del contenedor:
 
 ~~~
 docker exec -it  lamp-mysql8  /bin/bash`
 ~~~
 
-Una vez dentro nos conectamos con la base de datos:
+Una vez dentro del contenedor, nos conectamos a la base de datos:
 
 ~~~
 mysql -u root -p`
 ~~~
-Puedes ver el proceso en a siguiente imagen:
+
+Puedes ver el proceso en la siguiente imagen:
 
 ![](Images/img2.png)
 
-y una vez conectado introducimos las consultas sql necesarias para crear la base de datos, tabla e introducir los datos de los usuarios:
+Una vez conectados, introducimos las consultas sql necesarias para crear la base de datos, la tabla e introducir los datos de los usuarios:
 
 ~~~
 CREATE DATABASE SQLi;
@@ -70,7 +80,7 @@ CREATE TABLE usuarios (
 INSERT INTO usuarios (usuario, contrasenya) VALUES ('admin', '1234'), ('usuario', 'password');
 ~~~
 
-Vemos como se ha creado correctamente, tanto Base de Datos, como tabla y usuarios:
+Verificamos que se haya creado correctamente, tanto la base de datos, como la tabla y los usuarios:
 
 ![](Images/img3.png)
 
@@ -78,31 +88,30 @@ Vemos como se ha creado correctamente, tanto Base de Datos, como tabla y usuario
 **OPCIÓN 2: a través de PHPmyAdmin**
 ---
 
-- Accedemos via web al servicio de phpmyadmin que tenemos instalado: <http://localhost:8080>
+Accedemos a través de la web al servicio phpmyadmin que está instalado: <http://localhost:8080>
 
-- Si seleccionamos la opción de sql, podemos ejecutar sentencias de sqñ que necesitemos, por lo que solo necesitaríamos introducir las sentencias SQL del apartado anterior.
+Si seleccionamos la opción de sql, podemos ejecutar sentencias de sqñ que necesitemos, por lo que solo necesitaríamos introducir las sentencias SQL del apartado anterior.
 
 ![](Images/img4.png)
 
 
-
 ### Crear página web en Apache
 
-Vamos a crear una web con la que podamos explotar la vulnerabilidad de Inyección SQL. Esta aplicación o código debe de estar alojado en nuestro servidor web Apache.
+Vamos a crear una web con la que podamos explotar la vulnerabilidad de Inyección SQL, esta aplicación o código debe de estar alojado en nuestro servidor web Apache.
 
 Recordamos que en nuestro docker-compose hemos creado un volumen bind-mount para poder utilizar los archivos de nuestro sistema anfitrión. En concreto, tenemos una carpeta www que se monta en la carpeta **/var/www/html** del servidor web. Por lo tanto es muy sencillo colocar en el servidor, los archivos y carpetas que queramos.
 
-- Me situo en la carpeta _./www_ y creo una carpeta con nombre SQLi  para esta actividad.
+Nos desplazamos a la carpeta  _./www_ y creamos una carpeta llamada SQLi.
 
 ![](Images/img5.png)
 
-- Creo dentro de esa carpeta un archivo PHP con nombre **login.php**, con el siguiente contenido:
+Dentro de dicha carpeta (SQLi), cremaos un archivo PHP llamado **login.php**, con el siguiente contenido:
 
-¡¡¡OJO¡¡¡ que en la 2ª linea hay que cambiar PasswordBBDD por la contraseña de root de tu BBDD (recuerda que la tienes en la configuración de variables de entorno, el archivo .env).
+En la 2ª linea hay que cambiar tiger por la contraseña de root de nuestra BBDD (está situada en el fichero de configuración de variables de entorno, el archivo .env).
 
 ~~~
 <?php
-$conn = new mysqli("database", "root", "password", "SQLi");
+$conn = new mysqli("database", "root", "tiger", "SQLi");
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $username = $_POST["username"];
                 $password = $_POST["password"];
@@ -135,7 +144,7 @@ $conn = new mysqli("database", "root", "password", "SQLi");
 ![](Images/img6.png)
 
 
-Esta página nos muestra dos campos para que introduzcamos nuestro usuario y nuestra contraseña.
+La página nos muestra dos campos para que introduzcamos nuestro usuario y nuestra contraseña.
 
 ![](Images/img7.png)
 
